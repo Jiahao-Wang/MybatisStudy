@@ -5,8 +5,26 @@
 <mapper namespace="com.mybatisintro.dao.UserDao">
 
     <!--id 是 UserDao 里的方法名-->
-    <!--resultType 是 其返回值-->
+    <!--resultType 是其返回值：默认的映射关系，字段名和类里属性名一致-->
+    <!--resultMap：自定义映射关系。只有字段名和属性名不一致才用-->
+    <!---->
     <select id="getUserList" resultType="com.mybatisintro.pojo.User">
         select * from user
     </select>
+
+    <select id="getUserById" parameterType="int" resultType="com.mybatisintro.pojo.User">
+        select * from user where id = #{id}
+    </select>
+
+    <insert id="addUser" parameterType="com.mybatisintro.pojo.User">
+        insert into user (id, name, pwd) value (#{id}, #{name}, #{pwd})
+    </insert>
+
+    <update id="updateUser" parameterType="com.mybatisintro.pojo.User">
+        update user set name=#{name}, pwd=#{pwd} where id=#{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete from user where id=#{id}
+    </delete>
 </mapper>

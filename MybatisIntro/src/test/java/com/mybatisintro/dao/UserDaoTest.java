@@ -15,7 +15,7 @@ import java.util.List;
 public class UserDaoTest {
 
 	@Test
-	public void test(){
+	public void getUserListTest(){
 		SqlSession sqlSession = MybatisUtil.getSqlSession();
 
 		UserDao userDao = sqlSession.getMapper(UserDao.class);
@@ -27,4 +27,53 @@ public class UserDaoTest {
 
 		sqlSession.close();
 	}
+
+	@Test
+	public void getUserByIdTest(){
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
+
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		User user = userDao.getUserById(1);
+
+		System.out.println(user);
+
+		sqlSession.close();
+	}
+
+	@Test
+	public void addUserTest(){
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
+
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		userDao.addUser(new User(4, "maliu", "000"));
+
+		// 增删改必须要提交事物
+		sqlSession.commit();
+		sqlSession.close();
+	}
+
+	@Test
+	public void updateUserTest(){
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
+
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		userDao.updateUser(new User(4, "Jackie", "999"));
+
+		// 增删改必须要提交事物
+		sqlSession.commit();
+		sqlSession.close();
+	}
+
+	@Test
+	public void deleteUserTest(){
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
+
+		UserDao userDao = sqlSession.getMapper(UserDao.class);
+		userDao.deleteUser(4);
+
+		// 增删改必须要提交事物
+		sqlSession.commit();
+		sqlSession.close();
+	}
+
 }

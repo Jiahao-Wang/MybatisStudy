@@ -70,8 +70,8 @@
     -->
     <mappers>
         <!--
-        <mapper resource="mappers/UserMapper.xml"/>
+        <package name="com.mybatisgetparams.mapper"/>
         -->
-        <package name=""/>
+        <mapper resource="mappers/UserMapper.xml"/>
     </mappers>
 </configuration>

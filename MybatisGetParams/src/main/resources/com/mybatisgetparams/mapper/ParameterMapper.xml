@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatisgetparams.mapper.ParameterMapper">
+
+    <!---->
+
+    <select id="getAllUsers" resultType="User">
+        select * from user
+    </select>
+
+    <!--User getUserById();-->
+    <select id="getUserById" resultType="User">
+        select * from user where id = #{id}
+    </select>
+
+    <!--User checkLogin(String name, String pwd);-->
+    <select id="checkLogin" resultType="User">
+        select * from user where name = #{arg0} and pwd = #{arg1}
+    </select>
+
+    <!--User checkLogin(String name, String pwd);-->
+    <select id="checkLoginByMap" resultType="User">
+        select * from user where name = #{username} and pwd = #{pwd}
+    </select>
+
+    <!--void addUser(User user);-->
+    <insert id="addUser">
+        insert into user values (#{id}, #{name}, #{pwd})
+    </insert>
+
+    <!--User getUserByParam(@Param("userId") int id);-->
+    <select id="getUserByParam" resultType="User">
+        select * from user where id = #{userId}
+    </select>
+
+    <!--Map<String, Object> getUserByIdToMap(@Param("id") int id);-->
+    <select id="getUserByIdToMap" resultType="map">
+        select id, pwd from user where id = #{id}
+    </select>
+
+    <!--Map<String, Object> getAllUsersToMap();-->
+    <select id="getAllUsersToMap" resultType="map">
+        select * from user
+    </select>
+</mapper>

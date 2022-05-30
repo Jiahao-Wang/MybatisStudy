@@ -14,7 +14,7 @@ import java.util.Map;
  * @Description
  * @create 2022-05-23 10:04
  */
-public class MapperTest {
+public class ParameterMapperTest {
 
 	@Test
 	public void getAllUsersTest(){

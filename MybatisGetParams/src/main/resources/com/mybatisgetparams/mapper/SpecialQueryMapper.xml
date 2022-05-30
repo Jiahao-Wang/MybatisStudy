@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatisgetparams.mapper.SpecialQueryMapper">
+
+    <!---->
+    <!--这三种方式都行，最后一种用的最多-->
+    <!--List<User> getUserByLike(@Param("name") String name);-->
+    <select id="getUserByLike" resultType="User">
+        <!--select * from user where name like '%${name}%'-->
+        <!--select * from user where name like concat('%',#{name},'%')-->
+        select * from user where name like "%"#{name}"%"
+    </select>
+
+    <!--void deleteIn(@Param("ids") String ids);-->
+    <delete id="deleteIn">
+        <!--不能用 #{} 因为会加上单引号，不正确。虽然不会报错，但是无法删除-->
+        delete from user where id in (${ids})
+    </delete>
+
+    <!--List<User> getUserByTableName(@Param("tableName") String tableName);-->
+    <select id="getUserByTableName" resultType="User">
+        <!--不能用 #{} 因为也会加上单引号，而表名不能加单引号-->
+        select * from ${tableName}
+    </select>
+
+
+    <!--
+        useGeneratedKeys：当前标签中是否使用了自增的主键
+        keyProperty：将自增的主键映射到对象的相应属性
+        好像用 ${} 不行。未验证
+    -->
+    <!--void insertUser(User user);-->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into user values (null, #{name}, #{pwd})
+    </insert>
+</mapper>

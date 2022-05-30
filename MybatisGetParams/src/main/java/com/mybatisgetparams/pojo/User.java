@@ -6,11 +6,16 @@ package com.mybatisgetparams.pojo;
  * @create 2022-05-22 21:42
  */
 public class User {
-	private int id;
+	private Integer id =  null;
 	private String name;
 	private String pwd;
 
 	public User() {
+	}
+
+	public User(String name, String pwd) {
+		this.name = name;
+		this.pwd = pwd;
 	}
 
 	public User(int id, String name, String pwd) {

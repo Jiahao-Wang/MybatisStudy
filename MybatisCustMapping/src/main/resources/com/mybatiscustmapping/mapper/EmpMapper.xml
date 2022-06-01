@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatiscustmapping.mapper.EmpMapper">
+
+
+	<!---->
+	<!--
+		解决字段名和属性名不一致的问题：
+			方式一：为字段起别名，和属性名保持一致
+			方式二：在 mybatis-config 中 settings 里，设置 mapUnderscoreToCamelCase 为 true
+			方式三：通过 resultMap 设置映射
+	-->
+
+	<!--
+		resultMap 自定义映射关系。只在查询有用，CUD 都没啥用。除了命名不一致，主要用来设置一对多和多对一
+		resultMap 的 id：唯一标识
+		type：映射中实体类的类型
+		子标签：
+			id 用来设置主键
+			result 用来设置其他属性。property：类中的属性名。column：SQL 字段名
+				老师讲的：不管命名是否一致，都要全部设置
+				实际上，只需设置命名不一致的就够了，也不会报错。里面 id 标签都可以不要。
+	-->
+	<resultMap id="empResultMap" type="Emp">
+		<id property="eid" column="eid"></id>
+		<result property="empName" column="emp_name"></result>
+	</resultMap>
+
+	<!--List<Emp> getAllEmp();-->
+	<select id="getAllEmp" resultType="Emp">
+		select * from emp
+		<!--select eid, emp_name empName, age, gender, email from emp-->
+	</select>
+
+	<select id="getAllEmp1" resultMap="empResultMap">
+		select * from emp
+	</select>
+</mapper>

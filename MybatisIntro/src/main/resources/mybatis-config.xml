@@ -18,6 +18,10 @@
         <property name="username" value="root"/>
         -->
     </properties>
+    
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
 
     <!--设置类型别名，在 MyBatis 环境中都可以使用别名代替全类名-->
     <!--如果不写 alias，默认为类名（小写）。类型别名不区分大小写-->

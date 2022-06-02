@@ -1,6 +1,7 @@
 package com.mybatiscustmapping.mapper;
 
 import com.mybatiscustmapping.pojo.Emp;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,4 +13,9 @@ import java.util.List;
 public interface EmpMapper {
 
 	List<Emp> getAllEmp();
+	
+	Emp getEmpAndDept(@Param("eid") Integer eid);
+	
+	Emp getEmpAndDeptByStep1(@Param("eid") Integer eid);
+	
 }

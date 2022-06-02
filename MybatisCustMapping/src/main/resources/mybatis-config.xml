@@ -12,6 +12,7 @@
     <!--设置全局配置-->
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
     </settings>
 
     <typeAliases>

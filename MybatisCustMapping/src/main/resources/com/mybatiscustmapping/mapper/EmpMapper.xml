@@ -37,4 +37,58 @@
 	<select id="getAllEmp1" resultMap="empResultMap">
 		select * from emp
 	</select>
+
+
+
+	<!--处理多对一映射关系的方式一：级联属性赋值-->
+	<resultMap id="empAndDeptResultMap1" type="Emp">
+		<result property="empName" column="emp_name"></result>
+		<result property="dept.did" column="did"></result>
+		<result property="dept.deptName" column="d_name"></result>
+	</resultMap>
+	<!--Emp getEmpAndDept(@Param("eid") Integer eid);-->
+	<select id="getEmpAndDept1" resultMap="empAndDeptResultMap1">
+		select * from emp left join dept on emp.did = dept.did where emp.eid = #{eid}
+	</select>
+
+
+	<!--处理多对一映射关系的方式二：用 association-->
+	<resultMap id="empAndDeptResultMap2" type="Emp">
+		<result property="empName" column="emp_name"></result>
+
+		<!--
+			association：用来处理映射关系
+			property：需要处理映射关系的属性名
+			javaType：该属性的类型
+		-->
+		<association property="dept" javaType="Dept">
+			<id	property="did" column="did"></id>
+			<result property="deptName" column="d_name"></result>
+		</association>
+	</resultMap>
+
+	<!--Emp getEmpAndDept(@Param("eid") Integer eid);-->
+	<select id="getEmpAndDept" resultMap="empAndDeptResultMap1">
+		select * from emp left join dept on emp.did = dept.did where emp.eid = #{eid}
+	</select>
+
+
+
+
+	<resultMap id="empAndDeptResultMap3" type="Emp">
+		<result property="empName" column="emp_name"></result>
+		<!--
+			select：设置分步查询的 sql 的唯一标识（namespace.SQLId 或 mapper 接口的全类名.方法名）
+			column：设置分步查询的条件
+		-->
+		<association property="dept" select="com.mybatiscustmapping.mapper.DeptMapper.getEmpAndDeptByStep2" column="did">
+		</association>
+	</resultMap>
+	<!--Emp getEmpAndDeptByStep1(@Param("eid") Integer eid);-->
+	<select id="getEmpAndDeptByStep1" resultMap="empAndDeptResultMap3">
+		select * from emp where eid = #{eid}
+	</select>
+
+
+
 </mapper>

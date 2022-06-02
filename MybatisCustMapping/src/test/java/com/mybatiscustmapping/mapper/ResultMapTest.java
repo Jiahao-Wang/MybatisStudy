@@ -29,7 +29,24 @@ public class ResultMapTest {
 	}
 
 	@Test
-	public void xxTest(){
+	public void getEmpAndDeptTest(){
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
 		
+		EmpMapper specialQueryMapper = sqlSession.getMapper(EmpMapper.class);
+		Emp emp = specialQueryMapper.getEmpAndDept(2);
+		
+		System.out.println(emp);
+		sqlSession.close();
+	}
+	
+	@Test
+	public void getEmpAndDeptByStepTest(){
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
+		
+		EmpMapper specialQueryMapper = sqlSession.getMapper(EmpMapper.class);
+		Emp emp = specialQueryMapper.getEmpAndDeptByStep1(2);
+		
+		System.out.println(emp);
+		sqlSession.close();
 	}
 }

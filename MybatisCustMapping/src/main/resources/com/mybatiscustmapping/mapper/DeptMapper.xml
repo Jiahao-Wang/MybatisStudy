@@ -10,4 +10,48 @@
 		select * from dept where did = #{did}
 	</select>
 
+
+	<!--
+		一对多方式一：两表联查
+		一对多的时候，就要把所有需要的属性都写上，要不就是 null，不知道为啥。参考上面getAllEmp
+		collection：处理一对多的映射关系
+		ofType：表示集合中存储数据的类型
+	-->
+	<resultMap id="deptAndEmpResultMap" type="Dept">
+		<!--<id	property="did" column="did"></id>-->
+		<result property="deptName" column="d_name"></result>
+		<collection property="emps" ofType="Emp">
+			<result property="eid" column="eid"></result>
+			<result property="empName" column="emp_name"></result>
+			<result property="age" column="age"></result>
+			<result property="gender" column="gender"></result>
+			<result property="email" column="email"></result>
+		</collection>
+	</resultMap>
+
+	<!--Dept getDeptAndEmp(@Param("did") Integer did);-->
+	<select id="getDeptAndEmp" resultMap="deptAndEmpResultMap">
+		select * from dept left join emp on dept.did = emp.did where dept.did = #{did}
+	</select>
+
+
+
+
+
+
+
+
+	<resultMap id="getDeptAndEmpByStepResultMap" type="Dept">
+		<id	property="did" column="did"></id>
+		<result property="deptName" column="d_name"></result>
+		<collection property="emps" select="com.mybatiscustmapping.mapper.EmpMapper.getDeptAndEmpByStep2" column="did">
+			<!--<id	property="eid" column="eid"></id>-->
+			<result property="empName" column="emp_name"></result>
+		</collection>
+	</resultMap>
+
+	<!--Dept getDeptAndEmpByStep1(@Param("did") Integer did);-->
+	<select id="getDeptAndEmpByStep1" resultMap="getDeptAndEmpByStepResultMap">
+		select * from dept where did = #{did}
+	</select>
 </mapper>

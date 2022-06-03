@@ -91,4 +91,14 @@
 
 
 
+
+
+
+
+
+
+	<!--List<Emp> getDeptAndEmpByStep2(@Param("did") Integer did);-->
+	<select id="getDeptAndEmpByStep2" resultType="emp">
+		select * from emp where did = #{did}
+	</select>
 </mapper>

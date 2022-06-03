@@ -1,5 +1,7 @@
 package com.mybatiscustmapping.pojo;
 
+import java.util.List;
+
 /**
  * @author Jiahao Wang
  * @Description
@@ -13,6 +15,8 @@ public class Emp {
 	private String gender;
 	private String email;
 	private Dept dept;
+	
+	
 
 	public Emp() {
 	}
@@ -72,6 +76,8 @@ public class Emp {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	
 	
 	@Override
 	public String toString() {

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatisdynamicsql.mapper.DynamicSQLMapper">
+
+
+	<!--
+		sql 标签
+		如果有字段需要经常使用，可以写成 sql 标签，用 include 引用就行
+	-->
+	<sql id="empColumns">eid, emp_name, age, gender, email</sql>
+
+	<!--
+		trim：若标签中有内容，
+		若标签中没有内容，trim 标签没有任何效果
+		prefix/ suffix：将标签中的内容的前面或后面添加指定内容
+		prefixOverrides/ suffixOverrides：将标签中的内容前面或后面去除指定内容
+	-->
+	<!--List<Emp> getEmpByCondition(Emp emp);-->
+	<select id="getEmpByCondition" resultType="Emp">
+		select <include refid="empColumns"></include> from emp
+		<trim prefix="where" suffixOverrides="and|or">
+			<if test="empName != null and empName != ''">
+				emp_name = #{empName} and
+			</if>
+			<if test="gender != null and gender != ''">
+				gender = #{gender} and
+			</if>
+			<if test="age != null and age != ''">
+				age = #{age} and
+			</if>
+			<if test="email != null and email != ''">
+				email = #{email}
+			</if>
+		</trim>
+	</select>
+
+
+
+
+
+
+
+	<!--
+		当 where 标签中有内容时，会自动生成 where 关键字，并且将内容前多余的 and 或 or 去掉
+		当标签中没有内容时，where 没有任何效果（不会生成 where 关键字）
+		注意：where 标签不能将其中内容后的 and 或 or 去除，只能内容前的
+	-->
+	<!--List<Emp> getEmpByCondition(Emp emp);-->
+	<select id="getEmpByCondition2" resultType="Emp">
+		select * from emp
+		<where>
+			<if test="empName != null and empName != ''">
+				emp_name = #{empName}
+			</if>
+			<if test="gender != null and gender != ''">
+				and gender = #{gender}
+			</if>
+			<if test="age != null and age != ''">
+				and age = #{age}
+			</if>
+			<if test="email != null and email != ''">
+				and email = #{email}
+			</if>
+		</where>
+	</select>
+
+
+	<!--
+		添加 1=1 为了防止下面的有些条件缺失造成语句拼接错误
+
+	-->
+	<!--List<Emp> getEmpByCondition(Emp emp);-->
+	<select id="getEmpByCondition1" resultType="Emp">
+		select * from emp where 1=1
+		<if test="empName != null and empName != ''">
+			and emp_name = #{empName}
+		</if>
+		<if test="gender != null and gender != ''">
+			and gender = #{gender}
+		</if>
+		<if test="age != null and age != ''">
+			and age = #{age}
+		</if>
+		<if test="email != null and email != ''">
+			and email = #{email}
+		</if>
+	</select>
+
+
+
+	<!--******************************-->
+
+
+	<!--
+		choose ... when ... otherwise
+		相当于 Java 中的 if ... else if ... else
+		只要有一个条件成立了，后续的条件就不会再拼接了
+		至少要有一个 when，最多只能有一个 otherwise
+	-->
+	<!--List<Emp> getEmpByChoose(Emp emp);	-->
+	<select id="getEmpByChoose" resultType="Emp">
+		select * from emp
+		<where>
+			<choose>
+				<when test="empName != null and empName != ''">
+					emp_name = #{empName}
+				</when>
+				<when test="age != null and age != ''">
+					age = #{age}
+				</when>
+				<when test="gender != null and gender != ''">
+					gender = #{gender}
+				</when>
+				<when test="email != null and email != ''">
+					email = #{email}
+				</when>
+				<otherwise>
+					did = 1
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+
+
+
+	<!--
+		foreach
+		collection：需要循环的数组或集合
+		item：数组中的每个数据
+		separator：循环体之间的分隔符
+		open：foreach 标签中循环的所有内容的总开始符
+		close：foreach 标签中循环的所有内容的总结束符（一般只在 where id in 用得多，其他情况很少用）
+
+	-->
+
+
+	<!--int deleteByArray(Integer[] eids);-->
+	<delete id="deleteByArray1">
+		delete from emp where eid in
+		<foreach collection="eids" item="eid" separator="," open="(" close=")">
+			#{eid}
+		</foreach>
+	</delete>
+
+	<!--int deleteByArray(Integer[] eids);-->
+	<delete id="deleteByArray">
+		delete from emp where
+		<foreach collection="eids" item="eid" separator="or">
+			eid = #{eid}
+		</foreach>
+	</delete>
+
+
+
+	<!--int insertByList(List<Emp> emps);-->
+	<insert id="insertByList">
+		insert into emp values
+		<foreach collection="emps" item="emp" separator=",">
+			(null, #{emp.empName}, #{emp.age}, #{emp.gender}, #{emp.email}, null)
+		</foreach>
+	</insert>
+
+
+</mapper>

@@ -12,7 +12,8 @@
         <module>MybatisIntro</module>
         <module>MybatisGetParams</module>
         <module>MybatisCustMapping</module>
-    </modules>
+		<module>MybatisDynamicSQL</module>
+	</modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
